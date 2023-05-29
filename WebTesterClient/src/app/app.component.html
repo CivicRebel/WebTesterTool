@@ -1,0 +1,51 @@
+<nav class="navbar bg-primary navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid d-flex justify-content-start align-content-center">
+    <a class="navbar-brand" href="#">WebTester</a>
+    <div style="flex-grow: 1">
+        <div class="input-group d-flex" [formGroup] = "benchmarkConfiguration">
+            <div class="align-self: stretch" *ngIf="fileSizes && fileSizes.length > 0">  
+                <select formControlName="fileSizeId" class="form-select" 
+                style="border-left-width: 1px; border-top-right-radius: 0; border-bottom-right-radius: 0;" 
+               >
+                    <option *ngFor="let option of fileSizes" [value]="option.id">{{option.name}}</option>
+                </select>
+            </div>
+            <div class="align-self: stretch" *ngIf="chunkSizes && chunkSizes.length > 0">  
+              <select formControlName="chunkSizeId" class="form-select" 
+              style="border-radius: 0;" >
+                  <option *ngFor="let option of chunkSizes" [value]="option.id">{{option.name}}</option>
+              </select>
+            </div>
+            <input type="text" formControlName="endpoint" class="form-control" style="flex-grow: 6;" placeholder="Insert url">
+            <input type="number" formControlName="apiCallRepeat" class="form-control" placeholder="Times" min="1">
+            <div class="form-check" style="margin-left: 0.5em; padding-left: 2em; padding-right: 1.5em; margin-top: 0.4em">
+              <input class="form-check-input" type="checkbox" formControlName="simultaneousCalls" id="flexCheck">
+              <label class="form-check-label" for="flexCheck">
+                Simultaneous
+              </label>
+            </div>            
+            <button type="button" style="width: 80px" class="btn btn-info" (click)="runBenchmark()" [disabled]="benchmarkInProgress">Run</button>
+        </div>
+    </div>
+  </div>
+</nav>
+<div id="#content" style="margin-left: 200px; margin-right: 200px;" class="mt-4">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Output rate</th>
+        <th scope="col">Latency</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let result of callResults; let i = index">
+        <th scope="row">{{i + 1}}</th>
+        <td>{{result.outputRate}} MB/s</td>
+        <td>{{result.latency}}s</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-center mb-5">
+    <b>Test results: {{meanOutputRate}} MB/s mean output rate, {{meanLatency}}s mean latency</b></div>
+</div>
